@@ -1,0 +1,12 @@
+&ACCESS RVP
+&REL 1
+&PARAM EDITMASK = *
+&COMENT " Пример перемещение манипулятора KUKA в указанную позицию " 
+
+DEF MoveToPosition()
+
+  ; Объявление переменной для позиции
+  DECL E6POS targetPos
+  targetPos = {X 101, Y 321, Z 421, A 45, B 23, C 0, S 6, T 35}
+
+END
