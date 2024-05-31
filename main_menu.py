@@ -2,6 +2,21 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.font import Font
 import kuka_file_form
+from py_openshowvar import openshowvar
+import py_openshowvar
+
+ip = ''
+port = 0
+
+def check(ip, port):
+   if ip =='' or port == 0:
+      messagebox.showerror("Ошибка", "Установите соединение")
+      return False
+   else:
+      return True
+
+def is_empty(string):
+   return not string
 
 def menu_About():
    messagebox.showinfo("О программе", "Безопасное программное обествечение для удаленного управления промышленным манипулятором. Павлов Григорий Эдуардович БСБО-03-20.")
@@ -124,6 +139,36 @@ def set_def(entry_X,entry_Y,entry_Z,entry_A,entry_B,entry_C,entry_S,entry_T):
    entry_T.delete(0, tk.END)
    entry_T.insert(0, "35")
 
+def btn_set_connect_click(entry_ip, entry_port):
+   global ip
+   global port
+   ip = entry_ip.get()
+   port = entry_port.get()
+   if is_empty(ip):
+      messagebox.showerror("Ошибка", "Пожалуйста, введите IP")
+      return 0
+   
+   if is_empty(port):
+      messagebox.showerror("Ошибка", "Пожалуйста, введите PORT")
+      return 0
+   
+   if __name__ == '__main__':
+      ip = input('IP Address: ')
+      port = input('Port: ')
+      if not py_openshowvar.connecting(ip, int(port)):
+         ip = ''
+         port = 0
+   
+def btn_check_position_click():
+   global ip
+   global port
+
+   if check(ip, port):
+      messagebox.showerror("УСПЕХ")
+
+def btn_check_speed_click():
+   return 0
+
 def run_main_menu_scr():
    menu_root = tk.Tk()
    menu_root.title("Главное меню")
@@ -147,8 +192,15 @@ def run_main_menu_scr():
    btn_send = tk.Button(menu_root, font=my_font, text="Отправить", width=13, height=3, command=lambda: btn_send_click(entry_X,entry_Y,entry_Z,entry_A,entry_B,entry_C,entry_S,entry_T))
    btn_send.place(x=350, y=400)
 
-   btn_set_def = tk.Button(menu_root, font=my_font, text="HOME", width=13, command=lambda: set_def(entry_X,entry_Y,entry_Z,entry_A,entry_B,entry_C,entry_S,entry_T))
-   btn_set_def.place(x=400, y=30)
+   btn_check_position = tk.Button(menu_root, font=my_font, text="Текущая позиция", width=14, command=lambda: btn_check_position_click())
+   btn_check_position.place(x=400, y=150)
+
+   btn_check_speed = tk.Button(menu_root, font=my_font, text="Текущая скорость", width=14, command=lambda: btn_check_speed_click())
+   btn_check_speed.place(x=400, y=120)
+
+   btn_set_connect = tk.Button(menu_root, font=my_font, text="Установить соединение с KUKA", command=lambda: btn_set_connect_click(entry_ip, entry_port))
+   btn_set_connect.place(x=400, y=30)
+
 
    label_X = tk.Label(menu_root, text="X = ", font=my_font)
    label_X.place(x=20, y=25)
@@ -189,8 +241,13 @@ def run_main_menu_scr():
    label_T.place(x=20, y=165)
    label_T_diap = tk.Label(menu_root, text="от 0 до 63", font=my_font)
    label_T_diap.place(x=175, y=165)
-
    
+   label_IP = tk.Label(menu_root, text="IP: ", font=my_font)
+   label_IP.place(x=400, y=60)
+
+   label_PORT = tk.Label(menu_root, text="PORT: ", font=my_font)
+   label_PORT.place(x=400, y=90)
+
    entry_X = tk.Entry(menu_root, width=15, font=my_font)
    entry_X.place(x=60, y=25)
 
@@ -215,5 +272,17 @@ def run_main_menu_scr():
    entry_T = tk.Entry(menu_root, width=15, font=my_font, )
    entry_T.place(x=60, y=165)
 
+   entry_ip = tk.Entry(menu_root, width=30, font=my_font)
+   entry_ip.place(x=450, y=60)
+   entry_ip.delete(0, tk.END)
+   entry_ip.insert(0, "192.168.1.2")
+
+   entry_port = tk.Entry(menu_root, width=30, font=my_font)
+   entry_port.place(x=450, y=90)
+   entry_port.delete(0, tk.END)
+   entry_port.insert(0, "7000")
+
    menu_root.config(menu=menu_bar)
    menu_root.mainloop()
+
+run_main_menu_scr()
