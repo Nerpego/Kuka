@@ -7,6 +7,6 @@ DEF MoveToPosition()
 
   ; Объявление переменной для позиции
   DECL E6POS targetPos
-  targetPos = {X 101, Y 321, Z 421, A 45, B 23, C 0, S 6, T 35}
+  targetPos = {X 1, Y 2, Z 4, A 3, B 5, C 6, S 1, T 1}
 
 END
